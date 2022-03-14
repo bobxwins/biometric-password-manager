@@ -35,8 +35,6 @@ public class Hashing {
         } catch (Exception e) {
             Main.text[0].setFill(Color.RED);
             Main.text[0].setText("Password hashing failed" + "\n" +e);
-
-
         }
     }
 

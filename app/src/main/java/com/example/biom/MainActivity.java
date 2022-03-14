@@ -17,16 +17,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
+
+import test.FileUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    // create a CancellationSignal
-    // variable and assign a
-    // value null to it
+
     private CancellationSignal cancellationSignal = null;
 
-    // create an authenticationCallback
+
     private BiometricPrompt.AuthenticationCallback authenticationCallback;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -37,12 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-            // here we need to implement two methods
-            // onAuthenticationError and
-            // onAuthenticationSucceeded If the
-            // fingerprint is not recognized by the
-            // app it will call onAuthenticationError
-            // and show a toast
+
             @Override
             public void onAuthenticationError(
                     int errorCode, CharSequence errString) {
@@ -50,25 +50,19 @@ public class MainActivity extends AppCompatActivity {
                 notifyUser("Authentication Error : " + errString);
             }
 
-            // If the fingerprint is recognized by the
-            // app then it will call
-            // onAuthenticationSucceeded and show a
-            // toast that Authentication has Succeed
-            // Here you can also start a new activity
-            // after that
             @Override
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
                 fileStore();
                 notifyUser("Authentication Succeeded");
-                // or start a new Activity
+
             }
         };
 
         checkBiometricSupport();
         Button button = (Button)findViewById(R.id.button);
-        // create a biometric dialog on Click of button
+        // biometrisk dialog skabes når button trykkes
         button.setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
@@ -96,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                // start the authenticationCallback in
+                // starter   authenticationCallback i
                 // mainExecutor
                 biometricPrompt.authenticate(
                         getCancellationSignal(),
@@ -106,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }));
     }
 
-    // it will be called when
-    // authentication is cancelled by
-    // the user
+    // kadles når autentificering stoppes af brugeren
     private CancellationSignal getCancellationSignal()
     {
         cancellationSignal = new CancellationSignal();
@@ -122,19 +114,17 @@ public class MainActivity extends AppCompatActivity {
         return cancellationSignal;
     }
 
-    // it checks whether the
-    // app the app has fingerprint
-    // permission
+
     @RequiresApi(Build.VERSION_CODES.M)
     private Boolean checkBiometricSupport()
     {
         KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
         if (!keyguardManager.isDeviceSecure()) {
-            notifyUser("Fingerprint authentication has not been enabled in settings");
+            notifyUser("Fingerprint Autentificering er ikke slået til i indstillinger");
             return false;
         }
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.USE_BIOMETRIC)!= PackageManager.PERMISSION_GRANTED) {
-            notifyUser("Fingerprint Authentication Permission is not enabled");
+            notifyUser("Fingerprint Autentificering tilladelse er ikke slået til");
             return false;
         }
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
@@ -151,15 +141,14 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
     public void fileStore()  {
+        String dir = this.getExternalFilesDir(null).getAbsolutePath();
 
         byte[] testput = "User is verified".getBytes(StandardCharsets.UTF_8);
-        byte[] testput2 = "User is not verified".getBytes(StandardCharsets.UTF_8);
 
-        String dir = this.getExternalFilesDir(null).getAbsolutePath();
         System.out.println(dir);
         test.FileUtils.write(dir+"/myfile.txt", testput);
         System.out.println(test.FileUtils.readAllBytes(dir+"/myfile.txt").toString());
-        test.FileUtils.write(dir+"/myfile2.txt", testput2);
+
         // en bruger opretter sin symmetriske nøgle. nøglen og alt andet gemmes på telefonen, og ikke brugerens computer.
         // for at kunne dekryptere indholdet skal brugeren autentifiere sig via appen. så krypterings nøglen puttes i en vault som bruger kun har adgand til ved autentificering
         // gem kryptofilerne på telefonen

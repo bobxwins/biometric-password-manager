@@ -49,7 +49,7 @@ public class Encrypt {
 
         try {
 
-            GetAndroidFile getAndroidFile = new GetAndroidFile();
+            GetFilesFromAndroid getAndroidFile = new GetFilesFromAndroid();
             getAndroidFile.readFile();
 
 
@@ -84,7 +84,6 @@ public class Encrypt {
 
             for (File file : listOfFiles) {
                 if (file.isFile()) {
-
                     String inFile = file.getPath();
                     byte[] input = FileUtils.readAllBytes(inFile);
                     byte[] output = cipher.doFinal(input);
