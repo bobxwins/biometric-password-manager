@@ -3,6 +3,7 @@ package test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,7 +14,7 @@ public class GetAndroidFile {
     public void readFile()  {
 
         try {
-    String androidFilePath = "/storage/emulated/0/Android/data/com.example.myapp/files/myfile.txt";
+    String androidFilePath = "/storage/emulated/0/Android/data/com.example.biom/files/myfile.txt";
 
     String windowsFilePath = "C:\\Users\\bob-w\\Downloads\\encrypt";
 
@@ -27,29 +28,19 @@ public class GetAndroidFile {
     ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.redirectErrorStream(true);
 
-    String line = "null";
-
             pb.redirectErrorStream(true); // can use these 2 line if you want to see output or errors in file.
             pb.redirectOutput(new File("C:\\Users\\bob-w\\Downloads\\encrypt\\logs.txt"));
 
     Process p = pb.start();
 
-            while(p == null)
+            p.waitFor();
             Thread.sleep(1000);
 
     BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-    Pattern pattern = Pattern.compile("^([a-zA-Z0-9\\-]+)(\\s+)(device)");
-    Matcher matcher;
 
-
-            while ((line = in.readLine()) != null) {
-        if (line.matches(pattern.pattern())) {
-            matcher = pattern.matcher(line);
-            if (matcher.find()) ;
-        }
-
-    }
+            int exitval= p.waitFor();
+            System.out.println(exitval);
 
 }
         catch (Exception e) {
@@ -57,5 +48,3 @@ public class GetAndroidFile {
                 }
                 }
 }
-
-

@@ -5,23 +5,16 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="#168BC34A"
 	tools:context=".MainActivity">
 
-	<!-- Button added in the activity -->
 	<Button
-		android:id="@+id/button"
+		 android:id="@+id/button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:background="#4CAF50"
-		android:paddingStart="10dp"
-		android:paddingEnd="10dp"
-		android:text="@string/btn"
-		android:textColor="@android:color/background_light"
-		android:textSize="24sp"
+		android:text="Authenticate"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

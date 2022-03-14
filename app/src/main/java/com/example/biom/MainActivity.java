@@ -1,73 +1,167 @@
-package com.example.biom;
-import static android.content.ContentValues.TAG;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import android.bluetooth.BluetoothAdapter;
+package com.example.biom ;
 import android.Manifest;
+import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.nio.charset.StandardCharsets;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
+    // create a CancellationSignal
+    // variable and assign a
+    // value null to it
+    private CancellationSignal cancellationSignal = null;
+
+    // create an authenticationCallback
+    private BiometricPrompt.AuthenticationCallback authenticationCallback;
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
-
-    protected void onCreate(Bundle savedInstanceState)   {
-
-
+    protected void
+    onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
-
         setContentView(R.layout.activity_main);
 
-        // storing ID of the button
-        // in a variable
+        authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+            // here we need to implement two methods
+            // onAuthenticationError and
+            // onAuthenticationSucceeded If the
+            // fingerprint is not recognized by the
+            // app it will call onAuthenticationError
+            // and show a toast
+            @Override
+            public void onAuthenticationError(
+                    int errorCode, CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                notifyUser("Authentication Error : " + errString);
+            }
+
+            // If the fingerprint is recognized by the
+            // app then it will call
+            // onAuthenticationSucceeded and show a
+            // toast that Authentication has Succeed
+            // Here you can also start a new activity
+            // after that
+            @Override
+            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+
+                fileStore();
+                notifyUser("Authentication Succeeded");
+                // or start a new Activity
+            }
+        };
+
+        checkBiometricSupport();
         Button button = (Button)findViewById(R.id.button);
+        // create a biometric dialog on Click of button
+        button.setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.P)
+            @Override
+            public void onClick(View view)
+            {
+                // This creates a dialog of biometric
+                // auth and it requires title , subtitle
+                // , and description In our case there
+                // is a cancel button by clicking it, it
+                // will cancel the process of
+                // fingerprint authentication
+                BiometricPrompt biometricPrompt = new BiometricPrompt
+                        .Builder(getApplicationContext())
+                        .setTitle("Title of Prompt")
+                        .setSubtitle("Subtitle")
+                        .setDescription("Uses FP")
+                        .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void
+                            onClick(DialogInterface dialogInterface, int i)
+                            {
+                                notifyUser("Authentication Cancelled");
+                            }
+                        }).build();
 
-        // operations to be performed
-        // when user tap on the button
-        if (button != null) {
-            button.setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
-                public final void onClick(View it)  {
-                    try {
-                        fileStore();
-                        // displaying a toast message
-                        Toast.makeText((Context) MainActivity.this, R.string.message, Toast.LENGTH_LONG).show();
 
-                    } catch (Exception e) {
-                        //  Block of code to handle errors
+
+                // start the authenticationCallback in
+                // mainExecutor
+                biometricPrompt.authenticate(
+                        getCancellationSignal(),
+                        getMainExecutor(),
+                        authenticationCallback);
+            }
+        }));
+    }
+
+    // it will be called when
+    // authentication is cancelled by
+    // the user
+    private CancellationSignal getCancellationSignal()
+    {
+        cancellationSignal = new CancellationSignal();
+        cancellationSignal.setOnCancelListener(
+                new CancellationSignal.OnCancelListener() {
+                    @Override public void onCancel()
+                    {
+                        notifyUser("Authentication was Cancelled by the user");
                     }
-                }
-            }));
+                });
+        return cancellationSignal;
+    }
 
+    // it checks whether the
+    // app the app has fingerprint
+    // permission
+    @RequiresApi(Build.VERSION_CODES.M)
+    private Boolean checkBiometricSupport()
+    {
+        KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+        if (!keyguardManager.isDeviceSecure()) {
+            notifyUser("Fingerprint authentication has not been enabled in settings");
+            return false;
         }
-
-    }
-    public void fileStore() throws Exception {
-
-        byte[] testput = "This is new test data".getBytes(StandardCharsets.UTF_8);
-        test.FileUtils.write("/storage/emulated/0/Android/data/com.example.myapp/files/myfile.txt", testput);
-        System.out.println(test.FileUtils.readAllBytes("/storage/emulated/0/Android/data/com.example.myapp/files/myfile.txt").toString());
-
-
-        String dir = "/storage/emulated/0/Android/data/com.example.myapp/files/myfile2.txt";
-        test.FileUtils.write(dir, "dette er min fil".getBytes(StandardCharsets.UTF_8));
-
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.USE_BIOMETRIC)!= PackageManager.PERMISSION_GRANTED) {
+            notifyUser("Fingerprint Authentication Permission is not enabled");
+            return false;
+        }
+        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
+            return true;
+        }
+        else
+            return true;
     }
 
+    // this is a toast method which is responsible for
+    // showing toast it takes a string as parameter
+    private void notifyUser(String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    public void fileStore()  {
+
+        byte[] testput = "User is verified".getBytes(StandardCharsets.UTF_8);
+        byte[] testput2 = "User is not verified".getBytes(StandardCharsets.UTF_8);
+
+        String dir = this.getExternalFilesDir(null).getAbsolutePath();
+        System.out.println(dir);
+        test.FileUtils.write(dir+"/myfile.txt", testput);
+        System.out.println(test.FileUtils.readAllBytes(dir+"/myfile.txt").toString());
+        test.FileUtils.write(dir+"/myfile2.txt", testput2);
+        // en bruger opretter sin symmetriske nøgle. nøglen og alt andet gemmes på telefonen, og ikke brugerens computer.
+        // for at kunne dekryptere indholdet skal brugeren autentifiere sig via appen. så krypterings nøglen puttes i en vault som bruger kun har adgand til ved autentificering
+        // gem kryptofilerne på telefonen
+    }
 }
-
