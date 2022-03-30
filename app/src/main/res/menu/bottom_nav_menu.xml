@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/encrypt"
+        android:title="Encrypt"
+        android:icon="@drawable/encrypt_foreground"/>
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/home_foreground"/>
+    <item
+        android:id="@+id/decrypt"
+        android:title="Decrypt"
+        android:icon="@drawable/decrypt_foreground"/>
+</menu>

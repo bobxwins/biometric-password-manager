@@ -1,17 +1,18 @@
-package com.example.myapp;
+ package com.example.biom;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Base64;
+
+import com.example.biom.MainActivity;
+
 public class FileUtils {
 
   // readAllBytes(String FileName)
   // Reads all bytes in a file
   // The method merely hides the use of Paths.
-
-
 
   public static byte[] readAllBytes(String inputFile) {
     byte[] bytesRead = {};
@@ -30,6 +31,7 @@ public class FileUtils {
 
   public static void write(String outputFile, byte[] output) {
     try {
+
       Files.write(Paths.get(outputFile), output);
 
 
@@ -66,6 +68,9 @@ public class FileUtils {
   // getAllFileNames/2: file names need only have a certain extension
 
   public static String[] getAllFileNames(String dir, String ext) {
+
+
+
     ArrayList<String> results = new ArrayList<String>();
     File[] files = new File(dir).listFiles();
     for (File file : files) {
@@ -81,4 +86,5 @@ public class FileUtils {
     }
     return names;
   }
+
 }

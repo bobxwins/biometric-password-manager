@@ -52,6 +52,8 @@ public class Decrypt {
 
             // Password Based nøgle udledning med hash algoritmen SHA-256
 
+
+
             PBEKeySpec keySpec = new PBEKeySpec(password, getSalt(), iterationCountInt, keylengthInt);
             SecretKey key = factory.generateSecret(keySpec);
 
@@ -62,30 +64,20 @@ public class Decrypt {
           //  cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getIV()));
             // Algoritmen, block mode og padding samt provider definiers her
 
-
             // nøgle samt krypterings mode defineres her
-             Encrypt encrypt = new Encrypt();
+            Encrypt encrypt = new Encrypt();
+             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getIV()));
+
          for (File file : encrypt.listOfFiles) {
 
                 if (file.isFile()) {
-
-               //     if  ( Files.getFileExtension(file.getPath())=="txt");
                     String inFile= file.getPath();
-                     byte[] input = FileUtils.readAllBytes(inFile);
-
-                int FileFormat = file.getName().indexOf(".", file.getName().indexOf(".") + 1);
-
-                 String result = file.getName().substring(0, FileFormat);
-                   cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getIV()));
+                    byte[] input = FileUtils.readAllBytes(inFile);
                    byte[] output = cipher.doFinal(input);
-
-                     String dir = "C:\\Users\\bob-w\\Downloads\\encrypt\\lol";
-
-                    String outFile = dir + "/"  + result;
-
-
+                     String dir = "C:\\Users\\bob-w\\Downloads\\encrypt\\output";
+                    String outFile = dir + "/"  + file.getName();
                 FileUtils.write(outFile, output);
-               file.delete();
+
                 }
              }
 

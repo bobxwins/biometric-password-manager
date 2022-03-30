@@ -17,17 +17,14 @@ import java.util.Base64;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Encrypt {
 
-    public File Passwordfolder = new File("C:\\Users\\bob-w\\Downloads\\encrypt\\lol");
-    public File[] listOfFiles = Passwordfolder.listFiles();
+    public  File Passwordfolder = new File("C:\\Users\\bob-w\\Downloads\\encrypt\\output");
+
+    public    File[] listOfFiles = Passwordfolder.listFiles();
 
     public static String IVdir = "C:\\Users\\bob-w\\Downloads\\encrypt\\GenIV.txt";
 
@@ -49,6 +46,7 @@ public class Encrypt {
 
         try {
 
+
             GetFilesFromAndroid getAndroidFile = new GetFilesFromAndroid();
             getAndroidFile.readFile();
 
@@ -60,8 +58,12 @@ public class Encrypt {
 
             secureRandom.nextBytes(generatedIV);
             // NextBytes bruger en User-specified  antal bytes
+
             secureRandom.nextBytes(salt);
+
             char[] password = PasswordUtils.getUserPassword();
+
+
             PBEKeySpec keySpec = new PBEKeySpec(password, salt, iterationCount, keylength);
 
             // Den selected Fils path som  en string
@@ -87,9 +89,8 @@ public class Encrypt {
                     String inFile = file.getPath();
                     byte[] input = FileUtils.readAllBytes(inFile);
                     byte[] output = cipher.doFinal(input);
-                    String outFile = inFile + "." + "Encrypted" + "." + "aes";
+                    String outFile = inFile;
                     FileUtils.write(outFile, output);
-                    file.delete();
                 }
             }
 
