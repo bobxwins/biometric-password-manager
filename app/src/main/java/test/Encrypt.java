@@ -18,7 +18,7 @@ import java.util.Base64;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
-
+/*
 
 public class Encrypt {
 
@@ -127,3 +127,4 @@ public class Encrypt {
     }
 
 }
+*/

@@ -19,6 +19,7 @@ import java.nio.file.*;
 
 import java.nio.charset.StandardCharsets;
 
+ /*
 public class Decrypt {
 
   private static  byte[] storedkeylength = FileUtils.readAllBytes(Encrypt.KeyLengthdir);
@@ -29,6 +30,7 @@ public class Decrypt {
 
   private static  byte[] storedIterationCount = FileUtils.readAllBytes(Encrypt.IterationCountdir);
   private static String iterationCountString = new String(storedIterationCount);
+
   private static int iterationCountInt=Integer.parseInt( iterationCountString);
 
 
@@ -114,3 +116,5 @@ public class Decrypt {
     }
 
 }
+*/
+
