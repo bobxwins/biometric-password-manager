@@ -32,14 +32,6 @@ android {
 
 dependencies {
     implementation files('libs\\bcprov-jdk15on-168.jar')
-    implementation files('libs\\javafx.base.jar')
-    implementation files('libs\\javafx.controls.jar')
-    implementation files('libs\\javafx.fxml.jar')
-    implementation files('libs\\javafx.graphics.jar')
-    implementation files('libs\\javafx.media.jar')
-    implementation files('libs\\javafx.swing.jar')
-    implementation files('libs\\javafx.web.jar')
-    implementation files('libs\\javafx-swt.jar')
     implementation files('libs\\bcpkix-jdk15on-168.jar')
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -55,6 +47,14 @@ dependencies {
     implementation files('libs\\commons-lang3-3.12.0\\commons-lang3-3.12.0-test-sources.jar')
     implementation files('libs\\commons-lang3-3.12.0\\commons-lang3-3.12.0-sources.jar')
     implementation files('libs\\commons-lang3-3.12.0\\commons-lang3-3.12.0-javadoc.jar')
+    implementation files('libs\\lib\\javafx.base.jar')
+    implementation files('libs\\lib\\javafx.controls.jar')
+    implementation files('libs\\lib\\javafx.fxml.jar')
+    implementation files('libs\\lib\\javafx.graphics.jar')
+    implementation files('libs\\lib\\javafx.media.jar')
+    implementation files('libs\\lib\\javafx.swing.jar')
+    implementation files('libs\\lib\\javafx.web.jar')
+    implementation files('libs\\lib\\javafx-swt.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
