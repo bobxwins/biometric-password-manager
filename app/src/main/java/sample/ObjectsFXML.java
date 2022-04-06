@@ -23,11 +23,11 @@ public class ObjectsFXML  implements Serializable  {
 
     String ProjectPath ="file:"+System.getProperty("user.dir");
     public static int   Y =  (int) (Screen.getPrimary().getBounds().getHeight()/2)-150;
-   static String passwordFileName = System.getProperty("user.dir")+"\\minfil.txt";
+   static String passwordFileName = System.getProperty("user.dir")+"/minfil.txt";
     public void EntryObject  () throws Exception {
 
         Button newEntryButton  = new Button(" New Entry ");
-        Image image = new Image(String.valueOf(new File(ProjectPath+"\\folder.png")));
+        Image image = new Image(String.valueOf(new File(ProjectPath+"/folder.png")));
         ImageView imgview=new ImageView(image);
         newEntryButton.setLayoutY(Y+=30);
         newEntryButton.setLayoutX(37);
