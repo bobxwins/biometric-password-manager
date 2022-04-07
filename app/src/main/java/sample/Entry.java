@@ -2,6 +2,8 @@ package sample;
 
 import java.io.Serializable;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 
 public class Entry implements Serializable {
@@ -13,6 +15,7 @@ public class Entry implements Serializable {
         this.url=new TextField(urlString);
         this.password=new TextField(passwordString);
         this.notes=new TextField(noteString);
+
 
     }
     TextField titel, username, url, password, notes;

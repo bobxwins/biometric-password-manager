@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
@@ -36,7 +37,7 @@ public class ObjectsFXML  implements Serializable  {
         newEntryButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         newEntryButton.setOnAction(e -> {
             try{
-             //   createEntryfromFile  ();
+
             } catch (Exception E) {
 
             }
@@ -51,32 +52,31 @@ public class ObjectsFXML  implements Serializable  {
         entryLabel.setLayoutY(Y+=5);
         Main.anchorPane.getChildren().addAll(imgview,entryLabel);
         Main.anchorPane.getChildren().add(newEntryButton);
-        createEntryRows();
-
     }
 
-     void createEntryRows  () throws Exception
+
+   ObservableList <Entry> createEntryRows (ObservableList <Entry> entry) throws Exception
     {
-        ObservableList<Entry> entry = FXCollections.observableArrayList();
+     //   entry = FXCollections.observableArrayList();
         entry.addAll(new Entry("", "","","",""));
-        DatabaseController.tab.getItems().addAll(entry);
+        return entry;
     }
 
 
-    void createEntryfromFile  () throws Exception {
+
+    void createEntryfromFile  (TableView tableView) throws Exception {
         List<Entry> input ; ;
             input = readEntryFile(passwordFileName);
-            DatabaseController.tab.getItems().clear();
-            DatabaseController.tab.getItems().addAll(input);
-
+          tableView.getItems().clear();
+           tableView.getItems().addAll(input);
     }
 
-    public static void writeEntrytoFile(String filename, ObservableList<Entry> entries)
+    public static void writeEntrytoFile(String filename, TableView tabs)
             throws IOException {
         FileWriter writer = new FileWriter(filename);
         Entry entry;
-        for (int i = 0; i < DatabaseController.tab.getItems().size(); i++) {
-            entry = (Entry) DatabaseController.tab.getItems().get(i);
+        for (int i = 0; i < tabs.getItems().size(); i++) {
+            entry = (Entry) tabs.getItems().get(i);
 
             if (entry.getNotes().getText().length() == 0) {
                  writer.write(entry.getTitel().getText() + "," + entry.getUsername().getText() + "," +
