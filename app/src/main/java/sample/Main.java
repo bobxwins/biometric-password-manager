@@ -37,5 +37,12 @@ public class Main extends Application   {
         Scene scene = new Scene( anchorPane);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        DatabaseController.tab.setOnMouseClicked(e->{
+            EventHandler eventHandler = new EventHandler();
+            eventHandler.Selection();
+        });
+
+
     }
 }

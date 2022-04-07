@@ -6,15 +6,19 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 
 public class DatabaseController implements Serializable {
@@ -93,7 +97,6 @@ public class DatabaseController implements Serializable {
     TableColumn NotesColumn = new TableColumn("notes");
 
 
-
     @FXML
     void createEntry(ActionEvent event) throws Exception {
         //GetFilesFromAndroid getFilesFromAndroid = new GetFilesFromAndroid();
@@ -102,13 +105,20 @@ public class DatabaseController implements Serializable {
    ObjectsFXML objectsFXML = new ObjectsFXML();
       objectsFXML.EntryObject();
 
+
     }
+
     @FXML
     void loadEntry(ActionEvent event) throws Exception {
         ObjectsFXML objectsFXML = new ObjectsFXML();
          objectsFXML.createEntryfromFile ();
     }
 
+    @FXML
+    void deleteRow(ActionEvent event) throws  Exception {
+        Object selectedItem = tab.getSelectionModel().getSelectedItem();
+        tab.getItems().remove(selectedItem);
+    }
     @FXML
     void saveEntry(ActionEvent event) throws Exception {
         ObservableList<Entry> entry = FXCollections.observableArrayList();
@@ -117,7 +127,19 @@ public class DatabaseController implements Serializable {
     }
 
     @FXML
+void searchEntry(ActionEvent event) throws Exception {
+String searchString =    tfSearch.getText();
+    tfSearch.setOnKeyReleased(events -> {
+        if (events.getCode() == KeyCode.ENTER){
+            System.out.println( searchString);
+        }
+    });
+}
+
+
+    @FXML
     void initialize() {
+
         tab.setLayoutX(432);
         tab.setLayoutY(45);
         UsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
