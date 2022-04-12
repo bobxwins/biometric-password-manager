@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,28 +56,19 @@ public class ObjectsFXML  implements Serializable  {
     }
 
 
-   ObservableList <Entry> createEntryRows (ObservableList <Entry> entry) throws Exception
-    {
-     //   entry = FXCollections.observableArrayList();
-        entry.addAll(new Entry("", "","","",""));
-        return entry;
-    }
-
-
-
-    void createEntryfromFile  (TableView tableView) throws Exception {
-        List<Entry> input ; ;
+    void createEntryfromFile  (ObservableList<Entry> entry, List<Entry> input) throws Exception {
             input = readEntryFile(passwordFileName);
-          tableView.getItems().clear();
-           tableView.getItems().addAll(input);
+      entry.removeAll(entry);
+        entry.addAll(input);
+
     }
 
-    public static void writeEntrytoFile(String filename, TableView tabs)
+    public static void writeEntrytoFile(String filename, TableView tableView)
             throws IOException {
         FileWriter writer = new FileWriter(filename);
         Entry entry;
-        for (int i = 0; i < tabs.getItems().size(); i++) {
-            entry = (Entry) tabs.getItems().get(i);
+        for (int i = 0; i < tableView.getItems().size(); i++) {
+            entry = (Entry) tableView.getItems().get(i);
 
             if (entry.getNotes().getText().length() == 0) {
                  writer.write(entry.getTitel().getText() + "," + entry.getUsername().getText() + "," +

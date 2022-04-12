@@ -43,7 +43,7 @@
             </ImageView>
          </graphic></Button>
       <Label fx:id="labelEntry" layoutX="105.0" layoutY="282.0" text="EntryName" />
-      <TextField fx:id="tfSearch" layoutX="306.0" layoutY="6.0" onAction="#searchEntry" opacity="0.59" prefHeight="31.0" prefWidth="575.0" text="  Search..." />
+      <TextField fx:id="tfSearch" layoutX="306.0" layoutY="6.0" opacity="0.59" prefHeight="31.0" prefWidth="575.0" promptText="Search..." />
       <ScrollBar layoutX="1518.0" layoutY="-9.0" orientation="VERTICAL" prefHeight="806.0" prefWidth="18.0" />
       <ScrollBar layoutX="388.0" layoutY="45.0" orientation="VERTICAL" prefHeight="729.0" prefWidth="18.0" />
       <Button fx:id="btnSave" layoutX="237.0" layoutY="348.0" mnemonicParsing="false" onAction="#saveEntry" text="Save" />
@@ -57,5 +57,15 @@
             <TableColumn fx:id="colNotes" prefWidth="75.0" text="Notes" />
         </columns>
       </TableView>
+      <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="841.0" layoutY="6.0">
+         <image>
+            <Image url="@../../200-2000715_vector-symbol-of-magnifying-glass.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="24.0" fitWidth="38.0" layoutX="829.0" layoutY="10.0">
+         <image>
+            <Image url="@../../magnifying-glass.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
